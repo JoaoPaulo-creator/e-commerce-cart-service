@@ -1,0 +1,23 @@
+{
+  "name": "chart-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.1",
+    "inversify": "^6.0.1",
+    "prisma": "^4.11.0",
+    "tsx": "^3.12.3",
+    "typescript": "^4.9.5",
+    "zod": "^3.21.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "express": "^4.18.2"
+  }
+}
