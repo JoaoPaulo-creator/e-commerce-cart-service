@@ -1,43 +1,19 @@
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import { inject, injectable } from "tsyringe";
+import CartRepository from "../repository/cart-repository";
 
-const payLoadProps = z.object({
-  productDescription: z.string(),
-  productPrice: z.number(),
-  productName: z.string(),
-});
-
-export interface Test {
-  productDescription: string;
-  productName: string;
-  productPrice: number;
-}
-
-const prisma = new PrismaClient();
-
+@injectable()
 export class CreateCartService {
-  prisma: PrismaClient;
+  constructor(@inject(CartRepository) private cartRepository: CartRepository) {}
 
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
-
-  //
-  // productDescription: string, productName: string, productPrice: number
-
-  async create({ productDescription, productName, productPrice }: Test) {
-    /* return await this.cartRepository.createCart(
+  async creatCartItems(
+    productName: string,
+    productDescription: string,
+    productPrice: number
+  ) {
+    return await this.cartRepository.create(
       productName,
-      productDescription,2
+      productDescription,
       productPrice
-    ); */
-
-    return await this.prisma.cart.create({
-      data: {
-        product_description: productDescription,
-        produt_name: productName,
-        product_price: productPrice,
-      },
-    });
+    );
   }
 }

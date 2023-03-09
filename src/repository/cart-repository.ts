@@ -1,25 +1,27 @@
 import { PrismaClient } from "@prisma/client";
+import { injectable } from "tsyringe";
 
 const prismaClient = new PrismaClient();
 
-export class CartRepository {
-  async createCart(
-    productName: string,
-    productDescription: string,
-    productPrice: number
-  ) {}
+@injectable()
+export default class CartRepository {
+  async findAll() {
+    const cart = await prismaClient.cart.findMany();
+    return cart;
+  }
 
   async create(
-    productDescription: string,
     productName: string,
+    productDescription: string,
     productPrice: number
   ) {
-    return await prismaClient.cart.create({
+    const cart = await prismaClient.cart.create({
       data: {
-        product_description: productDescription,
         produt_name: productName,
+        product_description: productDescription,
         product_price: productPrice,
       },
     });
+    return cart;
   }
 }

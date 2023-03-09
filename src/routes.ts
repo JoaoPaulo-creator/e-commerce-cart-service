@@ -1,39 +1,19 @@
-import { PrismaClient } from "@prisma/client";
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import "reflect-metadata";
+import { container } from "tsyringe";
+import CreateCartController from "./controllers/create-cart.controller";
+import GetAllItemsCartController from "./controllers/get-all-items-cart.controller";
+export const routes = Router();
 
-import CreateCartController from "./controllers/create-cart-controller";
-import { CartRepository } from "./repository/cart-repository";
-import { CreateCartService } from "./services/create-cart.service";
+const createController: CreateCartController =
+  container.resolve<CreateCartController>(CreateCartController);
 
-const cartRepository = new CartRepository();
-const createCartServive = new CreateCartService(new PrismaClient());
-const createCartController = new CreateCartController();
+const getController: GetAllItemsCartController =
+  container.resolve<GetAllItemsCartController>(GetAllItemsCartController);
 
-//
-const router = Router();
-
-const prisma = new PrismaClient();
-router.post("/cart-products/create", createCartController.store);
-
-/*
-router.post("/cart-products/create", async (req, res) => {
-  const { productName, productDescription, productPrice } = req.body;
-
-  const a = await prisma.cart.create({
-    data: {
-      product_description: productDescription,
-      product_price: productPrice,
-      produt_name: productName,
-    },
-  });
-
-  return res.status(201).json({ a });
-});
-
- */
-
-router.get("/cart-products", async (req, res) => {
-  return res.json({ message: "Ola, mundo" });
-});
-
-export default router;
+routes.post("/cart-products/create", (req: Request, res: Response) =>
+  createController.store(req, res)
+);
+routes.get("/cart-products", (req: Request, res: Response) =>
+  getController.findAll(req, res)
+);
