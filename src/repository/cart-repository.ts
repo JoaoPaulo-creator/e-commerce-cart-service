@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { injectable } from "tsyringe";
-
-const prismaClient = new PrismaClient();
+import { prisma } from "../lib/prisma-service";
 
 @injectable()
 export default class CartRepository {
   async findAll() {
-    const cart = await prismaClient.cart.findMany();
+    const cart = await prisma.cart.findMany();
     return cart;
   }
 
@@ -15,7 +13,7 @@ export default class CartRepository {
     productDescription: string,
     productPrice: number
   ) {
-    const cart = await prismaClient.cart.create({
+    const cart = await prisma.cart.create({
       data: {
         produt_name: productName,
         product_description: productDescription,
