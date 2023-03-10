@@ -9,15 +9,21 @@ export default class CartRepository {
   }
 
   async create(
-    productName: string,
-    productDescription: string,
-    productPrice: number
+    price: number,
+    name: string,
+    description: string,
+    quantity: number
   ) {
     const cart = await prisma.cart.create({
       data: {
-        produt_name: productName,
-        product_description: productDescription,
-        product_price: productPrice,
+        product: {
+          create: {
+            price: price,
+            name: name,
+            description: description,
+          },
+        },
+        quantity: quantity,
       },
     });
     return cart;

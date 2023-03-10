@@ -11,10 +11,33 @@ datasource db {
 }
 
 model Cart {
-  id                  String @id @default(uuid())
-  product_description String
-  product_price       Int
-  produt_name         String
+  id         String    @id @default(uuid())
+  product    Product[]
+  quantity   Int
+  created_at DateTime? @default(now())
+  updated_at DateTime?
 
   @@map("cart")
 }
+
+model Product {
+  id          String  @id @default(uuid())
+  price       Int
+  name        String
+  description String
+  //category    Category @relation(fields: [categoryId], references: [id])
+  Cart        Cart?   @relation(fields: [cartId], references: [id])
+  cartId      String?
+  //categoryId  String
+
+  @@map("product")
+}
+
+// model Category {
+//   id      String    @id @default(uuid())
+//   name    String    @unique
+//   teste   String
+//   Product Product[]
+
+//   @@map("category")
+// }

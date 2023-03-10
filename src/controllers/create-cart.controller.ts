@@ -9,14 +9,21 @@ export default class CreateCartController {
   ) {}
 
   async store(req: Request, res: Response) {
-    const { productName, productDescription, productPrice } = req.body;
+    const { product, quantity } = req.body;
 
-    const cartItems = await this.createCartService.creatCartItems(
-      productName,
-      productDescription,
-      productPrice
-    );
+    //
 
-    return res.status(201).json(cartItems);
+    await this.createCartService
+      .creatCartItems({
+        product,
+        quantity,
+      })
+      .then((response) => {
+        return res.status(201).json({ ...response, product });
+      })
+      .catch((error) => {
+        const { message } = error;
+        return res.status(400).json({ message });
+      });
   }
 }
