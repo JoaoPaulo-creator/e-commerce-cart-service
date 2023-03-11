@@ -17,10 +17,7 @@ export default class CreateCartController {
         quantity,
       })
       .then((response) => {
-        console.log({ ...response, product });
-        return res
-          .status(201)
-          .json({ ...response, product, totalPrice: quantity * product.price });
+        return res.status(201).json({ ...response, product });
       })
       .catch((error) => {
         const { message } = error;

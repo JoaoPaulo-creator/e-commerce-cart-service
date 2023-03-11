@@ -16,6 +16,7 @@ model Cart {
   quantity   Int
   created_at DateTime? @default(now())
   updated_at DateTime?
+  total      Float
 
   @@map("cart")
 }

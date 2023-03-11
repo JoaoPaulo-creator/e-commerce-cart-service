@@ -7,3 +7,11 @@
 - [x] Refactor the actual CreateCartController
 - [ ] Create model to save product category
 - [ ] Create relationship between category and product model
+
+<br />
+
+# TODO
+
+- [ ] Create endpoint for Order Creation
+- [ ] Create endpoint for Order Update
+- [ ] Create endpoint for Order Delete

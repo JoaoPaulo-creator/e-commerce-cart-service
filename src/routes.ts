@@ -3,10 +3,15 @@ import "reflect-metadata";
 import { container } from "tsyringe";
 import CreateCartController from "./controllers/create-cart.controller";
 import GetAllItemsCartController from "./controllers/get-all-items-cart.controller";
+import UpdateCartController from "./controllers/update-cart.controller";
+
 export const routes = Router();
 
 const createController: CreateCartController =
   container.resolve<CreateCartController>(CreateCartController);
+
+const updateController: UpdateCartController =
+  container.resolve<UpdateCartController>(UpdateCartController);
 
 const getController: GetAllItemsCartController =
   container.resolve<GetAllItemsCartController>(GetAllItemsCartController);
@@ -14,6 +19,11 @@ const getController: GetAllItemsCartController =
 routes.post("/cart-products/create", (req: Request, res: Response) =>
   createController.store(req, res)
 );
+
+routes.put("/cart/:id/product", (req: Request, res: Response) =>
+  updateController.update(req, res)
+);
+
 routes.get("/cart-products", (req: Request, res: Response) =>
   getController.findAll(req, res)
 );
