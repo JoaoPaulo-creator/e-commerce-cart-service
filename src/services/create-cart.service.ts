@@ -14,12 +14,14 @@ export class CreateCartService {
     const productPrice = product.price;
     const productName = product.name;
     const productDescription = product.description;
+    const { categoryId } = product;
 
     return await this.cartRepository.create(
       productPrice,
       productName,
       productDescription,
-      quantity
+      quantity,
+      categoryId
     );
   }
 }

@@ -12,7 +12,8 @@ export default class CartRepository {
     price: number,
     name: string,
     description: string,
-    quantity: number
+    quantity: number,
+    categoryId: string
   ) {
     const cart = await prisma.cart.create({
       data: {
@@ -21,6 +22,7 @@ export default class CartRepository {
             price: price,
             name: name,
             description: description,
+            categoryId: categoryId,
           },
         },
         quantity: quantity,

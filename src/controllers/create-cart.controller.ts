@@ -11,15 +11,16 @@ export default class CreateCartController {
   async store(req: Request, res: Response) {
     const { product, quantity } = req.body;
 
-    //
-
     await this.createCartService
       .creatCartItems({
         product,
         quantity,
       })
       .then((response) => {
-        return res.status(201).json({ ...response, product });
+        console.log({ ...response, product });
+        return res
+          .status(201)
+          .json({ ...response, product, totalPrice: quantity * product.price });
       })
       .catch((error) => {
         const { message } = error;

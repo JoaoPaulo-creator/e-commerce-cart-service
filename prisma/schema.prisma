@@ -21,23 +21,22 @@ model Cart {
 }
 
 model Product {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   price       Int
   name        String
   description String
-  //category    Category @relation(fields: [categoryId], references: [id])
-  Cart        Cart?   @relation(fields: [cartId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+  Cart        Cart?    @relation(fields: [cartId], references: [id])
   cartId      String?
-  //categoryId  String
+  categoryId  String
 
   @@map("product")
 }
 
-// model Category {
-//   id      String    @id @default(uuid())
-//   name    String    @unique
-//   teste   String
-//   Product Product[]
+model Category {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Product Product[]
 
-//   @@map("category")
-// }
+  @@map("category")
+}
