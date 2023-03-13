@@ -55,4 +55,9 @@ export default class CartRepository {
 
     return cart;
   }
+
+  async delete(id: string) {
+    const cartId = await prisma.cart.delete({ where: { id: id } });
+    return cartId;
+  }
 }

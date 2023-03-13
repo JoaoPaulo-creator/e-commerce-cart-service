@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { autoInjectable, inject } from "tsyringe";
-import UpdateCartService from "../services/update-cart.service";
+import UpdateCartService from "../../services/update-cart.service";
 
 @autoInjectable()
 export default class UpdateCartController {
