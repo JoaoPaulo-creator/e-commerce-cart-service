@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma-service";
 
 @injectable()
 export class CategoryRepository {
-  async store(name: string) {
+  async create(name: string) {
     return await prisma.category.create({ data: { name } });
   }
 
@@ -13,6 +13,10 @@ export class CategoryRepository {
 
   async findAll() {
     return await prisma.category.findMany();
+  }
+
+  async findById(id: string) {
+    return await prisma.category.findUnique({ where: { id } });
   }
 
   async index(id: string) {

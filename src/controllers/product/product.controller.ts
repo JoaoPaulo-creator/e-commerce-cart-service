@@ -1,21 +1,17 @@
 import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma-service";
-
+import ProductRepository from "../../repository/product.repository";
 class ProductController {
   async createProduct(req: Request, res: Response) {
-    const { description, price, title, quantity, categoryId } = req.body;
+    const { description, price, title, categoryId } = req.body;
 
-    const createProduct = await prisma.product.create({
-      data: {
-        description,
-        price,
-        title,
-        quantity,
-        categoryId,
-      },
-    });
+    const createProduct = await ProductRepository.store(
+      price,
+      title,
+      description,
+      categoryId
+    );
 
-    return res.status(201).json({ ...createProduct, categoryId });
+    return res.status(201).json(createProduct);
   }
 }
 

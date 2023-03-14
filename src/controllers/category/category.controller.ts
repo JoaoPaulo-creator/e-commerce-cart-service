@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma-service";
+import { autoInjectable, inject } from "tsyringe";
+import CategoryService from "../../services/category/category.service";
 
-class CategoryController {
+@autoInjectable()
+export default class CategoryController {
+  constructor(
+    @inject(CategoryService) private categoryService: CategoryService
+  ) {}
   async save(req: Request, res: Response) {
     const { name } = req.body;
 
-    const createCategory = await prisma.category.create({ data: { name } });
-
-    return res.status(201).json(createCategory);
+    return await this.categoryService
+      .createCategory(name)
+      .then((response) => {
+        return res.status(201).json(response);
+      })
+      .catch(() => res.status(400).json({ error: "Category already exists" }));
   }
 }
-
-export default new CategoryController();

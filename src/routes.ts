@@ -37,12 +37,21 @@ routes.delete("/cart/:id", (req: Request, res: Response) =>
 );
 
 import CategoryController from "./controllers/category/category.controller";
+import OrderController from "./controllers/order/order.controller";
 
-routes.post("/categories", CategoryController.save);
+const categoryController: CategoryController =
+  container.resolve<CategoryController>(CategoryController);
 
-import orderController from "./controllers/order/order.controller";
+routes.post("/categories", (req: Request, res: Response) =>
+  categoryController.save(req, res)
+);
 
-routes.post("/orders", orderController.createOrder);
+const orderControllerResolver: OrderController =
+  container.resolve<OrderController>(OrderController);
+
+routes.post("/orders", (req: Request, res: Response) =>
+  orderControllerResolver.createOrder(req, res)
+);
 
 import productController from "./controllers/product/product.controller";
 

@@ -7,6 +7,9 @@ export class FindAllCartItemsService {
 
   async getAllItems() {
     const cartItems = await this.cartRepository.findAll();
+    if (cartItems.length === 0) {
+      throw Error("Your cart is empty");
+    }
     return cartItems;
   }
 }

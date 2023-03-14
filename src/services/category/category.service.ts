@@ -7,5 +7,23 @@ export default class CategoryService {
     @inject(CategoryRepository) private categoryRepository: CategoryRepository
   ) {}
 
-  async createOrder() {}
+  async createCategory(name: string) {
+    const createCategory = await this.categoryRepository.create(name);
+    return createCategory;
+  }
+
+  async findCategoryById(categoryId: string) {
+    const category = await this.categoryRepository.findById(categoryId);
+    return category;
+  }
+
+  async findAll() {
+    const categories = await this.categoryRepository.findAll();
+    return categories;
+  }
+
+  async deleteCategory(categoryId: string) {
+    const category = await this.categoryRepository.delete(categoryId);
+    return category;
+  }
 }

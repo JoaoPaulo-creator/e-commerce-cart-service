@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { autoInjectable, inject } from "tsyringe";
-import { prisma } from "../../lib/prisma-service";
 import { CreateCartService } from "../../services/cart/create-cart.service";
 
 @autoInjectable()
@@ -12,12 +11,13 @@ export default class CreateCartController {
   async store(req: Request, res: Response) {
     const { orderId } = req.body;
 
-    const createCart = await prisma.cart.create({
-      data: {
-        orderId,
-      },
-    });
-
-    return res.status(201).json({ ...createCart, orderId });
+    return await this.createCartService
+      .creatCartItems(orderId)
+      .then((response) => {
+        return res.status(201).json(response);
+      })
+      .catch((error) => {
+        return res.status(400).json({ message: error.message });
+      });
   }
 }

@@ -1,17 +1,15 @@
 import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma-service";
+import { autoInjectable, inject } from "tsyringe";
+import OrderRepository from "../../services/order/order.repository";
 
-class OrderController {
+@autoInjectable()
+export default class OrderController {
+  constructor(@inject(OrderRepository) private orderRepo: OrderRepository) {}
+
   async createOrder(req: Request, res: Response) {
-    const { productId } = req.body;
-    const createOrder = await prisma.order.create({
-      data: {
-        productId,
-      },
-    });
+    const { quantity, productId } = req.body;
+    const createOrder = await this.orderRepo.store(quantity, productId);
 
-    return res.status(201).json({ ...createOrder, productId });
+    return res.status(201).json(createOrder);
   }
 }
-
-export default new OrderController();

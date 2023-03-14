@@ -5,10 +5,18 @@ import { prisma } from "../lib/prisma-service";
 export default class CartRepository {
   async findAll() {
     const cart = await prisma.cart.findMany({
-      include: {
-        product: true,
+      select: {
+        id: true,
+        order: {
+          select: {
+            product: true,
+
+            quantity: true,
+          },
+        },
       },
     });
+
     return cart;
   }
 
@@ -17,25 +25,16 @@ export default class CartRepository {
     return cartId;
   }
 
-  async create(
-    price: number,
-    name: string,
-    description: string,
-    quantity: number,
-    categoryId: string
-  ) {
+  async create(orderId: string) {
     const cart = await prisma.cart.create({
       data: {
-        product: {
-          create: {
-            price: price,
-            name: name,
-            description: description,
-            categoryId: categoryId,
-          },
+        orderId,
+      },
+      select: {
+        id: true,
+        order: {
+          select: { id: true, product: true, quantity: true, productId: true },
         },
-        quantity: quantity,
-        total: quantity * price,
       },
     });
     return cart;

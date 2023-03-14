@@ -10,8 +10,15 @@ export default class GetAllItemsCartController {
   ) {}
 
   async findAll(req: Request, res: Response) {
-    await this.findAllItems.getAllItems().then((response) => {
-      return res.status(200).json(response);
-    });
+    await this.findAllItems
+      .getAllItems()
+      .then((response) => {
+        const { cart }: any = JSON.stringify(response);
+        return res.status(200).json(cart);
+      })
+      .catch((error) => {
+        const { message } = error;
+        return res.status(200).json({ message });
+      });
   }
 }
