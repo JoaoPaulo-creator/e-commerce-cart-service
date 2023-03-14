@@ -35,3 +35,15 @@ routes.get("/cart-products", (req: Request, res: Response) =>
 routes.delete("/cart/:id", (req: Request, res: Response) =>
   deleteController.deleteCartById(req, res)
 );
+
+import CategoryController from "./controllers/category/category.controller";
+
+routes.post("/categories", CategoryController.save);
+
+import orderController from "./controllers/order/order.controller";
+
+routes.post("/orders", orderController.createOrder);
+
+import productController from "./controllers/product/product.controller";
+
+routes.post("/products", productController.createProduct);

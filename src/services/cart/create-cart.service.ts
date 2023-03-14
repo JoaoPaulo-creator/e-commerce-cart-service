@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-import { CartItemsProps } from "../interfaces/cart-items-props";
-import CartRepository from "../repository/cart-repository";
+import { CartItemsProps } from "../../interfaces/cart-items-props";
+import CartRepository from "../../repository/cart-repository";
 
 @injectable()
 export class CreateCartService {

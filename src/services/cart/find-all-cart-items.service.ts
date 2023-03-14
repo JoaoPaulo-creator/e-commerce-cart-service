@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import CartRepository from "../repository/cart-repository";
+import CartRepository from "../../repository/cart-repository";
 
 @injectable()
 export class FindAllCartItemsService {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { autoInjectable, inject } from "tsyringe";
-import DeleteCartService from "../../services/delete-cart.service";
+import DeleteCartService from "../../services/cart/delete-cart.service";
 
 @autoInjectable()
 export default class DeleteCartController {

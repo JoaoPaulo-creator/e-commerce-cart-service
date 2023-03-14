@@ -12,32 +12,43 @@ datasource db {
 
 model Cart {
   id         String    @id @default(uuid())
-  product    Product[]
-  quantity   Int
+  order      Order     @relation(fields: [orderId], references: [id])
   created_at DateTime? @default(now())
   updated_at DateTime?
-  total      Float
+  orderId    String
 
   @@map("cart")
 }
 
+model Order {
+  id        String  @id @default(uuid())
+  product   Product @relation(fields: [productId], references: [id])
+  Cart      Cart[]
+  productId String
+
+  @@map("order")
+}
+
 model Product {
-  id          String   @id @default(uuid())
-  price       Int
-  name        String
+  id          String    @id @default(uuid())
+  price       Float
+  title       String
   description String
-  category    Category @relation(fields: [categoryId], references: [id])
-  Cart        Cart?    @relation(fields: [cartId], references: [id])
-  cartId      String?
+  quantity    Int
+  category    Category  @relation(fields: [categoryId], references: [id])
   categoryId  String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime?
+  Order       Order[]
 
   @@map("product")
 }
 
 model Category {
-  id      String    @id @default(uuid())
-  name    String    @unique
-  Product Product[]
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime? @default(now())
+  Product   Product[]
 
   @@map("category")
 }

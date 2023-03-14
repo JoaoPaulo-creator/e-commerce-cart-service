@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { autoInjectable, inject } from "tsyringe";
-import { FindAllCartItemsService } from "../../services/find-all-cart-items.service";
+import { FindAllCartItemsService } from "../../services/cart/find-all-cart-items.service";
 
 @autoInjectable()
 export default class GetAllItemsCartController {
