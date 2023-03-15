@@ -12,7 +12,8 @@ export class CategoryRepository {
   }
 
   async findAll() {
-    return await prisma.category.findMany();
+    const categories = await prisma.category.findMany();
+    return categories;
   }
 
   async findById(id: string) {
