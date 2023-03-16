@@ -7,22 +7,12 @@ export default class OrderService {
     @inject(OrderRepository) private orderRepository: OrderRepository
   ) {}
 
-  async createOrder(
-    status: string,
-    price: number,
-    description: string,
-    quantity: number,
-    title: string,
-    categoryId: string
-  ) {
-    const createOrder = await this.orderRepository.store(
-      status,
-      price,
-      description,
-      quantity,
-      title,
-      categoryId
-    );
+  async createOrder(products: Object[]) {
+    if (!products || products.length === 0) {
+      throw Error("At least one product must be informed");
+    }
+
+    const createOrder = await this.orderRepository.store(products);
     return createOrder;
   }
 

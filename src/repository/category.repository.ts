@@ -1,10 +1,11 @@
 import { injectable } from "tsyringe";
 import { prisma } from "../lib/prisma-service";
+import { categoryModel } from "../models/category.model";
 
 @injectable()
 export class CategoryRepository {
   async create(name: string) {
-    return await prisma.category.create({ data: { name } });
+    return await categoryModel.create({ name });
   }
 
   async update() {
@@ -12,7 +13,7 @@ export class CategoryRepository {
   }
 
   async findAll() {
-    const categories = await prisma.category.findMany();
+    const categories = await categoryModel.find();
     return categories;
   }
 

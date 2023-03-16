@@ -1,41 +1,27 @@
-import { prisma } from "../lib/prisma-service";
-
+import { productModel } from "../models/product.model";
 class ProductRepository {
   async store(
     price: number,
-    quantity: number,
     title: string,
     description: string,
     categoryId: string
   ) {
-    const createProduct = await prisma.product.create({
-      data: {
-        price,
-        quantity,
-        title,
-        description,
-        categoryId: categoryId,
-      },
-      select: {
-        id: true,
-        price: true,
-        quantity: true,
-        title: true,
-        description: true,
-        category: true,
-      },
+    const createProduct = await productModel.create({
+      price,
+      title,
+      description,
+      categoryId,
     });
-
     return createProduct;
   }
 
   async findById(id: string) {
-    const productId = await prisma.product.findUnique({ where: { id } });
+    const productId = await productModel.findById(id);
     return productId;
   }
 
   async findAll() {
-    const products = await prisma.product.findMany();
+    const products = await productModel.find();
     return products;
   }
 }

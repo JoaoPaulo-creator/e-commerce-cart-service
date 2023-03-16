@@ -15,12 +15,18 @@ export default class CategoryController {
       .then((response) => {
         return res.status(201).json(response);
       })
-      .catch(() => res.status(400).json({ error: "Category already exists" }));
+      .catch(() => res.status(400).json({ error: "Category already exists" }))
+      .catch((error) => {
+        return res.json({ error: error.message });
+      });
   }
 
   async show(req: Request, res: Response) {
     return await this.categoryService
       .findAll()
-      .then((response) => res.json(response));
+      .then((response) => res.json(response))
+      .catch((error) => {
+        return res.json(error);
+      });
   }
 }

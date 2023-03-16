@@ -1,77 +1,50 @@
 import { injectable } from "tsyringe";
-import { prisma } from "../lib/prisma-service";
+import { orderModel } from "../models/order.model";
 
 @injectable()
 export default class OrderRepository {
-  async store(
-    status: string,
-    price: number,
-    description: string,
-    quantity: number,
-    title: string,
-    categoryId: string
-  ) {
-    const createOrder = await prisma.order.create({
-      data: {
-        status,
-        products: {
-          create: {
-            price,
-            description,
-            quantity,
-            title,
-            categoryId,
-          },
-        },
-      },
-      select: {
-        id: true,
-        products: true,
-      },
+  async store(products: Object[]) {
+    const createOrder = await orderModel.create({
+      products,
     });
     return createOrder;
   }
 
+  // TODO: Fix this
   async findAll() {
-    const orders = await prisma.order.findMany({
-      select: {
-        id: true,
-        status: true,
-        products: {
-          select: {
-            id: true,
-            category: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            description: true,
-            price: true,
-            title: true,
-            quantity: true,
-            updatedAt: false,
-          },
+    const orders = await orderModel.aggregate([
+      {
+        $lookup: {
+          from: "product",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productInfo",
         },
       },
-    });
+      {
+        $match: {
+          _id: { $exists: true },
+        },
+      },
+      {
+        $project: {
+          orderDate: 1,
+          price: "$product.price",
+          title: "$product.title",
+        },
+      },
+    ]);
+
     return orders;
   }
 
   async findById(orderId: string) {
-    const orders = await prisma.order.findUnique({
-      where: { id: orderId },
-      select: {
-        id: true,
-        status: true,
-        products: true,
-      },
-    });
+    const orders = await orderModel.findById(orderId);
     return orders;
   }
 
   async delete(id: string) {
-    const deleterOrder = await prisma.order.delete({ where: { id } });
+    const deleterOrder = await orderModel.findByIdAndDelete(id);
     return deleterOrder;
   }
 }

@@ -3,17 +3,15 @@ import ProductRepository from "../../repository/product.repository";
 
 class ProductController {
   async createProduct(req: Request, res: Response) {
-    const { quantity, description, price, title, categoryId } = req.body;
+    const { description, price, title, categoryId } = req.body;
 
-    const createProduct = await ProductRepository.store(
-      price,
-      quantity,
-      title,
-      description,
-      categoryId
-    );
-
-    return res.status(201).json(createProduct);
+    return await ProductRepository.store(price, title, description, categoryId)
+      .then((response) => {
+        return res.status(201).json(response);
+      })
+      .catch((error) => {
+        return res.status(400).json({ error: error.message });
+      });
   }
 
   async getProducts(req: Request, res: Response) {

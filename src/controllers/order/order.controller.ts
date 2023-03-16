@@ -7,16 +7,10 @@ export default class OrderController {
   constructor(@inject(OrderService) private orderService: OrderService) {}
 
   async createOrder(req: Request, res: Response) {
-    const { status, products } = req.body;
-
-    const price = products.price;
-    const description = products.description;
-    const quantity = products.quantity;
-    const title = products.title;
-    const categoryId = products.categoryId;
+    const { products } = req.body;
 
     return await this.orderService
-      .createOrder(status, price, description, quantity, title, categoryId)
+      .createOrder(products)
       .then((response) => {
         return res.status(201).json(response);
       })
@@ -55,7 +49,7 @@ export default class OrderController {
     return await this.orderService
       .deleteOrder(id)
       .then((response) => {
-        return res.status(204);
+        return res.sendStatus(204); // aparently, sendStatus() it's needed when using mongoDB
       })
       .catch((error) => {
         return res.status(404).json({ error: error.message });
