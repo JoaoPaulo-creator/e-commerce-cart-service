@@ -58,6 +58,18 @@ export default class OrderRepository {
     return orders;
   }
 
+  async findById(orderId: string) {
+    const orders = await prisma.order.findUnique({
+      where: { id: orderId },
+      select: {
+        id: true,
+        status: true,
+        products: true,
+      },
+    });
+    return orders;
+  }
+
   async delete(id: string) {
     const deleterOrder = await prisma.order.delete({ where: { id } });
     return deleterOrder;

@@ -34,7 +34,31 @@ export default class OrderController {
       .catch((error) => res.status(200).json({ message: error.message }));
   }
 
+  async getOrderById(req: Request, res: Response) {
+    const { id } = req.params;
+    return await this.orderService
+      .findOrderById(id)
+      .then((response) => {
+        return res.status(200).json(response);
+      })
+      .catch((error) => {
+        return res.status(404).json({ message: error.message });
+      });
+  }
+
   async updateOrder(req: Request, res: Response) {
-    const { id } = req.body;
+    const { id } = req.params;
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    return await this.orderService
+      .deleteOrder(id)
+      .then((response) => {
+        return res.status(204);
+      })
+      .catch((error) => {
+        return res.status(404).json({ error: error.message });
+      });
   }
 }

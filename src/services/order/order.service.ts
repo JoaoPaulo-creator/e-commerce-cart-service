@@ -34,4 +34,21 @@ export default class OrderService {
 
     return orders;
   }
+
+  async findOrderById(orderId: string) {
+    const order = await this.orderRepository.findById(orderId);
+    if (!order) {
+      throw Error("Order not found");
+    }
+    return order;
+  }
+
+  async deleteOrder(orderId: string) {
+    const orderExists = await this.orderRepository.findById(orderId);
+    if (!orderExists) {
+      throw Error("Order id not found");
+    }
+    const order = await this.orderRepository.delete(orderId);
+    return order;
+  }
 }

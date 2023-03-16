@@ -29,6 +29,14 @@ routes.get("/orders", (req: Request, res: Response) =>
   orderControllerResolver.getOrders(req, res)
 );
 
+routes.get("/order/:id", (req: Request, res: Response) =>
+  orderControllerResolver.getOrderById(req, res)
+);
+
+routes.delete("/order/:id", (req: Request, res: Response) =>
+  orderControllerResolver.delete(req, res)
+);
+
 import productController from "./controllers/product/product.controller";
 
 routes.post("/products", productController.createProduct);
