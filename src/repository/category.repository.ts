@@ -1,5 +1,4 @@
 import { injectable } from "tsyringe";
-import { prisma } from "../lib/prisma-service";
 import { categoryModel } from "../models/category.model";
 
 @injectable()
