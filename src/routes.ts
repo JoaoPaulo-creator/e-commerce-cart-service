@@ -57,3 +57,7 @@ routes.post("/products", (req: Request, res: Response) =>
 routes.get("/products", (req: Request, res: Response) =>
   productResolver.getProducts(req, res)
 );
+
+routes.delete("/product/:id", (req: Request, res: Response) =>
+  productResolver.deleteProduct(req, res)
+);

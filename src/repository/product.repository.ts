@@ -27,4 +27,9 @@ export default class ProductRepository {
     const products = await productModel.find();
     return products;
   }
+
+  async delete(id: string) {
+    const order = await productModel.findByIdAndDelete(id);
+    return order;
+  }
 }

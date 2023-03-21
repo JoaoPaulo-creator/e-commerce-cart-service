@@ -25,4 +25,9 @@ export default class ProductController {
     const products = await this.productRepo.findAll();
     return res.status(200).json(products);
   }
+
+  async deleteProduct(req: Request, res: Response) {
+    const { id } = req.params;
+    return await this.productRepo.delete(id).then(() => res.sendStatus(204));
+  }
 }
