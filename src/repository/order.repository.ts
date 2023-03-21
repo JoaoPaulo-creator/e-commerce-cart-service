@@ -1,5 +1,6 @@
 import { injectable } from "tsyringe";
 import { orderModel } from "../models/order.model";
+
 @injectable()
 export default class OrderRepository {
   async store(products: Object[]) {
