@@ -24,7 +24,7 @@ export default class ProductRepository {
   }
 
   async findAll() {
-    const products = await productModel.find();
+    const products = await productModel.find().populate("product_category");
     return products;
   }
 
