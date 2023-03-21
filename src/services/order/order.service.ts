@@ -63,7 +63,12 @@ export default class OrderService {
     return updateStatus;
   }
 
-  async updateOrderQuantity(orderId: string, status: string, quantity: number) {
+  async updateOrderQuantity(
+    orderId: string,
+    status: string,
+    productId: string,
+    quantity: number
+  ) {
     const order = await this.orderRepository.findById(orderId);
     const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE"];
 
@@ -77,6 +82,7 @@ export default class OrderService {
 
     const updateQuantity = await this.orderRepository.updateQuantity(
       orderId,
+      productId,
       quantity
     );
     return updateQuantity;

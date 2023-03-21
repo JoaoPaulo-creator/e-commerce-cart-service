@@ -50,12 +50,38 @@ export default class OrderRepository {
   }
 
   async updateStatus(id: string, status: string) {
-    const orderStatus = await orderModel.updateOne({ id: id, status });
+    const filter = { id: id };
+    const query = { status: status };
+
+    const orderStatus = await orderModel.findByIdAndUpdate(id, { status });
     return orderStatus;
   }
 
-  async updateQuantity(orderId: string, quantity: number) {
-    const order = await orderModel.findByIdAndUpdate(orderId, { quantity });
+  // This methods is used to update the quantity of specific item on the cart
+  async updateQuantity(
+    orderId: string,
+    productArrayId: string,
+    quantitiy: number
+  ) {
+    /*
+      this is the payload used on this example
+      {
+          "status": "IN_PREPARATION",
+          "products": [
+            {
+              "product": "641275570285dc98252a1a2c",
+              "quantity": 123123,
+              "_id": "64190bd2267df0ccfeec043b"
+            }
+          ]
+      }
+    */
+
+    const order = await orderModel.findOneAndUpdate(
+      { _id: orderId, "products._id": productArrayId },
+      { $set: { "products.$.quantity": quantitiy } },
+      { new: true }
+    );
     return order;
   }
 }

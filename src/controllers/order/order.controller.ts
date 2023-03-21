@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import { autoInjectable, inject } from "tsyringe";
+import OrderRepository from "../../repository/order.repository";
 import OrderService from "../../services/order/order.service";
-
 @autoInjectable()
 export default class OrderController {
-  constructor(@inject(OrderService) private orderService: OrderService) {}
+  constructor(
+    @inject(OrderService) private orderService: OrderService,
+    @inject(OrderRepository) private orderRepo: OrderRepository
+  ) {}
 
   async createOrder(req: Request, res: Response) {
     const { products } = req.body;
@@ -42,13 +45,11 @@ export default class OrderController {
 
   async updateOrderStatus(req: Request, res: Response) {
     const { id } = req.params;
-    const { status } = req.body;
+    const { products } = req.body;
 
     return await this.orderService
-      .updateOrderStatus(id, status)
-      .then((response) => {
-        return res.status(200).json({ response });
-      })
+      .updateOrderStatus(id, products[0].status)
+      .then(() => res.sendStatus(204))
       .catch((error) => {
         return res.status(400).json({ error: error.message });
       });
@@ -56,14 +57,14 @@ export default class OrderController {
 
   async updateOrderQuantity(req: Request, res: Response) {
     const { id } = req.params;
-    const { quantity, status } = req.body;
-
-    // const quantity = products[0].quantity;
+    const { products, status } = req.body;
+    const productId = products[0]._id;
+    const quantity = products[0].quantity;
 
     return await this.orderService
-      .updateOrderQuantity(id, status, quantity)
-      .then(() => {
-        return res.sendStatus(204);
+      .updateOrderQuantity(id, status, productId, quantity)
+      .then((response) => {
+        return res.status(200).json(response);
       })
       .catch((error) => {
         return res.status(400).json({ error: error.message });
