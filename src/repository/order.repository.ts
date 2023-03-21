@@ -1,6 +1,5 @@
 import { injectable } from "tsyringe";
 import { orderModel } from "../models/order.model";
-
 @injectable()
 export default class OrderRepository {
   async store(products: Object[]) {
@@ -12,7 +11,7 @@ export default class OrderRepository {
 
   // TODO: Fix this
   async findAll() {
-    const orders = await orderModel.aggregate([
+    /* const orders = await orderModel.aggregate([
       {
         $lookup: {
           from: "product",
@@ -33,7 +32,9 @@ export default class OrderRepository {
           title: "$product.title",
         },
       },
-    ]);
+    ]); */
+
+    const orders = await orderModel.find();
 
     return orders;
   }
@@ -46,5 +47,15 @@ export default class OrderRepository {
   async delete(id: string) {
     const deleterOrder = await orderModel.findByIdAndDelete(id);
     return deleterOrder;
+  }
+
+  async updateStatus(id: string, status: string) {
+    const orderStatus = await orderModel.updateOne({ id: id, status });
+    return orderStatus;
+  }
+
+  async updateQuantity(orderId: string, quantity: number) {
+    const order = await orderModel.findByIdAndUpdate(orderId, { quantity });
+    return order;
   }
 }

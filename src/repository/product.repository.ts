@@ -1,5 +1,8 @@
+import { injectable } from "tsyringe";
 import { productModel } from "../models/product.model";
-class ProductRepository {
+
+@injectable()
+export default class ProductRepository {
   async store(
     price: number,
     title: string,
@@ -25,5 +28,3 @@ class ProductRepository {
     return products;
   }
 }
-
-export default new ProductRepository();

@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
+import { autoInjectable, inject } from "tsyringe";
 import ProductRepository from "../../repository/product.repository";
 
-class ProductController {
+@autoInjectable()
+export default class ProductController {
+  constructor(
+    @inject(ProductRepository) private productRepo: ProductRepository
+  ) {}
+
   async createProduct(req: Request, res: Response) {
     const { description, price, title, categoryId } = req.body;
 
-    return await ProductRepository.store(price, title, description, categoryId)
+    return await this.productRepo
+      .store(price, title, description, categoryId)
       .then((response) => {
         return res.status(201).json(response);
       })
@@ -15,9 +22,7 @@ class ProductController {
   }
 
   async getProducts(req: Request, res: Response) {
-    const products = await ProductRepository.findAll();
+    const products = await this.productRepo.findAll();
     return res.status(200).json(products);
   }
 }
-
-export default new ProductController();

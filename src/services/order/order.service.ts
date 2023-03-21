@@ -1,10 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import OrderRepository from "../../repository/order.repository";
+import productRepository from "../../repository/product.repository";
 
 @injectable()
 export default class OrderService {
   constructor(
-    @inject(OrderRepository) private orderRepository: OrderRepository
+    @inject(OrderRepository) private orderRepository: OrderRepository,
+    @inject(productRepository) private productRepo: productRepository
   ) {}
 
   async createOrder(products: Object[]) {
@@ -40,5 +42,43 @@ export default class OrderService {
     }
     const order = await this.orderRepository.delete(orderId);
     return order;
+  }
+
+  async updateOrderStatus(orderId: string, status: string) {
+    const order = await this.orderRepository.findById(orderId);
+    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE"];
+
+    if (!order) {
+      throw new Error("Id not found");
+    }
+
+    if (!statusList.includes(status)) {
+      throw new Error("Invalid status");
+    }
+
+    const updateStatus = await this.orderRepository.updateStatus(
+      orderId,
+      status
+    );
+    return updateStatus;
+  }
+
+  async updateOrderQuantity(orderId: string, status: string, quantity: number) {
+    const order = await this.orderRepository.findById(orderId);
+    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE"];
+
+    if (!order) {
+      throw new Error("Id not found");
+    }
+
+    if (!statusList.includes(status)) {
+      throw new Error("Invalid status");
+    }
+
+    const updateQuantity = await this.orderRepository.updateQuantity(
+      orderId,
+      quantity
+    );
+    return updateQuantity;
   }
 }

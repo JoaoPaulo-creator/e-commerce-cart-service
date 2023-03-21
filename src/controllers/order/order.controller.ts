@@ -40,8 +40,34 @@ export default class OrderController {
       });
   }
 
-  async updateOrder(req: Request, res: Response) {
+  async updateOrderStatus(req: Request, res: Response) {
     const { id } = req.params;
+    const { status } = req.body;
+
+    return await this.orderService
+      .updateOrderStatus(id, status)
+      .then((response) => {
+        return res.status(200).json({ response });
+      })
+      .catch((error) => {
+        return res.status(400).json({ error: error.message });
+      });
+  }
+
+  async updateOrderQuantity(req: Request, res: Response) {
+    const { id } = req.params;
+    const { quantity, status } = req.body;
+
+    // const quantity = products[0].quantity;
+
+    return await this.orderService
+      .updateOrderQuantity(id, status, quantity)
+      .then(() => {
+        return res.sendStatus(204);
+      })
+      .catch((error) => {
+        return res.status(400).json({ error: error.message });
+      });
   }
 
   async delete(req: Request, res: Response) {

@@ -37,7 +37,23 @@ routes.delete("/order/:id", (req: Request, res: Response) =>
   orderControllerResolver.delete(req, res)
 );
 
-import productController from "./controllers/product/product.controller";
+routes.patch("/order/:id", (req: Request, res: Response) =>
+  orderControllerResolver.updateOrderStatus(req, res)
+);
 
-routes.post("/products", productController.createProduct);
-routes.get("/products", productController.getProducts);
+routes.patch("/order/:id/quantity", (req: Request, res: Response) =>
+  orderControllerResolver.updateOrderQuantity(req, res)
+);
+
+import ProductController from "./controllers/product/product.controller";
+
+const productResolver: ProductController =
+  container.resolve<ProductController>(ProductController);
+
+routes.post("/products", (req: Request, res: Response) =>
+  productResolver.createProduct(req, res)
+);
+
+routes.get("/products", (req: Request, res: Response) =>
+  productResolver.getProducts(req, res)
+);
