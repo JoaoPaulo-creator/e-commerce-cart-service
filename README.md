@@ -7,3 +7,8 @@ at this time
 - Currently, an Order may have only one product linked per order
 
 Again: If I want to link multiple products to an Order, an Order id should be created before, then linked to multiples products
+
+
+# UPDATE
+
+Moved to mongoDB already
