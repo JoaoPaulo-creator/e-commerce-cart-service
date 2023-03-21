@@ -9,10 +9,10 @@ export default class ProductController {
   ) {}
 
   async createProduct(req: Request, res: Response) {
-    const { description, price, title, categoryId } = req.body;
+    const { description, unitPrice, title, categoryId } = req.body;
 
     return await this.productRepo
-      .store(price, title, description, categoryId)
+      .store(unitPrice, title, description, categoryId)
       .then((response) => {
         return res.status(201).json(response);
       })

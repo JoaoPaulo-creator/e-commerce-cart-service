@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose";
 export const productModel = model(
   "product",
   new Schema({
-    price: {
+    unitPrice: {
       type: Number,
       required: true,
     },

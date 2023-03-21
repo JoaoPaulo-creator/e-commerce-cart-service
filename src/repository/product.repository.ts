@@ -4,13 +4,13 @@ import { productModel } from "../models/product.model";
 @injectable()
 export default class ProductRepository {
   async store(
-    price: number,
+    unitPrice: number,
     title: string,
     description: string,
     categoryId: string
   ) {
     const createProduct = await productModel.create({
-      price,
+      unitPrice,
       title,
       description,
       categoryId,

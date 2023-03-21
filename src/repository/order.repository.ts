@@ -16,7 +16,9 @@ export default class OrderRepository {
   }
 
   async findById(orderId: string) {
-    const orders = await orderModel.findById(orderId);
+    const orders = await orderModel
+      .findById(orderId)
+      .populate("products.product");
     return orders;
   }
 
