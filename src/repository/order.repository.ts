@@ -27,7 +27,7 @@ export default class OrderRepository {
       },
       {
         $project: {
-          orderDate: 1,
+          orderDate: 1, // 1: ASCENDING | -1: DESCENDING
           price: "$product.price",
           title: "$product.title",
         },
