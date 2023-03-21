@@ -10,33 +10,8 @@ export default class OrderRepository {
     return createOrder;
   }
 
-  // TODO: Fix this
   async findAll() {
-    /* const orders = await orderModel.aggregate([
-      {
-        $lookup: {
-          from: "product",
-          localField: "_id",
-          foreignField: "_id",
-          as: "productInfo",
-        },
-      },
-      {
-        $match: {
-          _id: { $exists: true },
-        },
-      },
-      {
-        $project: {
-          orderDate: 1, // 1: ASCENDING | -1: DESCENDING
-          price: "$product.price",
-          title: "$product.title",
-        },
-      },
-    ]); */
-
-    const orders = await orderModel.find();
-
+    const orders = await orderModel.find().populate("products.product");
     return orders;
   }
 

@@ -24,7 +24,10 @@ export default class ProductRepository {
   }
 
   async findAll() {
-    const products = await productModel.find().populate("product_category");
+    // To add category name/description on response,
+    // is necessary to use populate() method, and reference to field
+    // that has a reference to another document
+    const products = await productModel.find().populate("categoryId");
     return products;
   }
 
