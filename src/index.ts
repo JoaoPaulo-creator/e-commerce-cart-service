@@ -1,11 +1,14 @@
 import config from "config";
 import express from "express";
 import dataBaseConnection from "../config/database";
+import corsMiddleware from "./middlewares/cors/cors-setup";
 import { routes } from "./routes";
 
 const app = express();
+const cors = corsMiddleware;
 
 app.use(express.json());
+app.use(cors);
 app.use("/api/v1", routes);
 
 const port = config.get<number>("port");
