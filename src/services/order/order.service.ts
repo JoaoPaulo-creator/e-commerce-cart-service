@@ -36,7 +36,12 @@ export default class OrderService implements IOrderService {
       throw new Error("Your cart is impty");
     }
 
-    return orders;
+    const filteredOrders = orders.filter(
+      (order) => !order.status.includes("CANCELLED")
+    );
+    console.log("Orders from orders list:", orders.length);
+    console.log("Filtered orders:", filteredOrders.length);
+    return filteredOrders;
   }
 
   async findOrderById(orderId: string) {
