@@ -1,21 +1,20 @@
-import { injectable } from "tsyringe";
 import { productModel } from "../models/product.model";
+import { IProducts } from "./interfaces/product";
 
-@injectable()
-export default class ProductRepository {
-  async store(
+export default class ProductRepository implements IProducts {
+  async save(
+    description: string,
     unitPrice: number,
     title: string,
-    description: string,
     categoryId: string
   ) {
-    const createProduct = await productModel.create({
+    const product = await productModel.create({
+      description,
       unitPrice,
       title,
-      description,
       categoryId,
     });
-    return createProduct;
+    return product;
   }
 
   async findById(id: string) {

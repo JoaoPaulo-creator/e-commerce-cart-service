@@ -1,13 +1,25 @@
-import { inject, injectable } from "tsyringe";
-import OrderRepository from "../../repository/order.repository";
-import productRepository from "../../repository/product.repository";
+import { IOrders } from "../../repository/interfaces/order";
 
-@injectable()
-export default class OrderService {
-  constructor(
-    @inject(OrderRepository) private orderRepository: OrderRepository,
-    @inject(productRepository) private productRepo: productRepository
-  ) {}
+export interface IOrderService {
+  createOrder(products: Object[]);
+  findOrders();
+  findOrderById(orderId: string);
+  deleteOrder(orderId: string);
+  updateOrderStatus(orderId: string, status: string);
+  updateOrderQuantity(
+    orderId: string,
+    status: string,
+    productId: string,
+    quantity: number
+  );
+}
+
+export default class OrderService implements IOrderService {
+  private orderRepository: IOrders;
+
+  constructor(orderRepository: IOrders) {
+    this.orderRepository = orderRepository;
+  }
 
   async createOrder(products: Object[]) {
     if (!products || products.length === 0) {
