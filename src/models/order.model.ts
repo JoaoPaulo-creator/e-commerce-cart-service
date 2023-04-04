@@ -5,7 +5,7 @@ export const orderModel = model(
   new Schema({
     status: {
       type: String,
-      enum: ["IN_PREPARATION", "ON_THE_WAY", "DONE"],
+      enum: ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"],
       default: "IN_PREPARATION",
     },
     createdAt: {

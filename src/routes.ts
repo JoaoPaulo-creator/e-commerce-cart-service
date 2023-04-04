@@ -41,5 +41,14 @@ routes.get(
 // orders
 routes.get("/orders", orderController.getOrders.bind(orderController));
 routes.post("/orders", orderController.createOrder.bind(orderController));
+routes.patch(
+  "/order/:id",
+  orderController.updateOrderStatus.bind(orderController)
+);
+
+routes.patch(
+  "/order/:id/quantity",
+  orderController.updateOrderQuantity.bind(orderController)
+);
 routes.delete("/order/:id", orderController.delete.bind(orderController));
 routes.get("/order/:id", orderController.getOrderById.bind(orderController));

@@ -1,17 +1,17 @@
 import { IOrders } from "../../repository/interfaces/order";
 
+// TODO: fix return type
 export interface IOrderService {
-  createOrder(products: Object[]);
-  findOrders();
-  findOrderById(orderId: string);
-  deleteOrder(orderId: string);
-  updateOrderStatus(orderId: string, status: string);
+  createOrder(products: Object[]): any;
+  findOrders(): any;
+  findOrderById(orderId: string): any;
+  deleteOrder(orderId: string): any;
+  updateOrderStatus(orderId: string, status: string): any;
   updateOrderQuantity(
     orderId: string,
-    status: string,
     productId: string,
     quantity: number
-  );
+  ): any;
 }
 
 export default class OrderService implements IOrderService {
@@ -58,7 +58,7 @@ export default class OrderService implements IOrderService {
 
   async updateOrderStatus(orderId: string, status: string) {
     const order = await this.orderRepository.findById(orderId);
-    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE"];
+    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
 
     if (!order) {
       throw new Error("Id not found");
@@ -77,19 +77,20 @@ export default class OrderService implements IOrderService {
 
   async updateOrderQuantity(
     orderId: string,
-    status: string,
     productId: string,
     quantity: number
   ) {
     const order = await this.orderRepository.findById(orderId);
-    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE"];
+    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
 
     if (!order) {
       throw new Error("Id not found");
     }
 
-    if (!statusList.includes(status)) {
-      throw new Error("Invalid status");
+    if (!order.status.includes("IN_PREPARATION")) {
+      throw new Error(
+        "Is not possible to update this order. Maye this orders was cancelled or is on it's way to customer"
+      );
     }
 
     const updateQuantity = await this.orderRepository.updateQuantity(
