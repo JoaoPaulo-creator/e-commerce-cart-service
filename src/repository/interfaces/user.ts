@@ -1,76 +1,13 @@
-import { Document, Types } from "mongoose";
-
 export interface IUser {
-  create(
-    name: string,
-    email: string
-  ): Promise<
-    Document<
-      unknown,
-      {},
-      {
-        name: string;
-        email: string;
-        createdAt: Date;
-      }
-    > &
-      Omit<
-        {
-          name: string;
-          email: string;
-          createdAt: Date;
-        } & {
-          _id: Types.ObjectId;
-        },
-        never
-      >
-  >;
-
-  findAll(): Promise<
-    (Document<
-      unknown,
-      {},
-      {
-        name: string;
-        email: string;
-        createdAt: Date;
-      }
-    > &
-      Omit<
-        {
-          name: string;
-          email: string;
-          createdAt: Date;
-        } & {
-          _id: Types.ObjectId;
-        },
-        never
-      >)[]
-  >;
-
-  updateUser(id: string): Promise<
-    | (Document<
-        unknown,
-        {},
-        {
-          name: string;
-          email: string;
-          createdAt: Date;
-        }
-      > &
-        Omit<
-          {
-            name: string;
-            email: string;
-            createdAt: Date;
-          } & {
-            _id: Types.ObjectId;
-          },
-          never
-        >)
-    | null
-  >;
-  findUserByEmail(email: string);
-  findById(id: string);
+  create(name: string, email: string): Promise<UserProps>;
+  findAll(): Promise<UserProps[]>;
+  updateUser(id: string): Promise<UserProps>;
+  findUserByEmail(email: string): Promise<UserProps>;
+  findById(id: string): Promise<UserProps>;
   deleteUser(id: string): Promise<void>;
+}
+
+export interface UserProps {
+  name: string;
+  email: string;
 }
