@@ -3,12 +3,15 @@ import { Router } from "express";
 import CategoryController from "./controllers/category/category.controller";
 import OrderController from "./controllers/order/order.controller";
 import ProductController from "./controllers/product/product.controller";
+import UserController from "./controllers/user/user.controller";
 import { CategoryRepository } from "./repository/category.repository";
 import OrderRepository from "./repository/order.repository";
 import ProductRepository from "./repository/product.repository";
+import UserRepository from "./repository/user.repository";
 import CategoryService from "./services/category/category.service";
 import OrderService from "./services/order/order.service";
 import ProductService from "./services/product/product.service";
+import UserService from "./services/user/user.service";
 
 const categoryRepo = new CategoryRepository();
 const categoryService = new CategoryService(categoryRepo);
@@ -21,6 +24,10 @@ const productController = new ProductController(productService);
 const orderRepo = new OrderRepository();
 const orderService = new OrderService(orderRepo);
 const orderController = new OrderController(orderService);
+
+const userRepo = new UserRepository();
+const userService = new UserService(userRepo);
+const userController = new UserController(userService);
 
 export const routes = Router();
 
@@ -52,3 +59,9 @@ routes.patch(
 );
 routes.delete("/order/:id", orderController.delete.bind(orderController));
 routes.get("/order/:id", orderController.getOrderById.bind(orderController));
+
+// users
+routes.post("/users", userController.save.bind(userController));
+routes.get("/users", userController.findAll.bind(userController));
+routes.get("/user/:id", userController.findById.bind(userController));
+routes.delete("/user/:id", userController.delete.bind(userController));
