@@ -1,10 +1,10 @@
-import { IUser } from "../../repository/interfaces/user";
+import { IUser, UserProps } from "../../repository/interfaces/user";
 
 interface IUserService {
-  store(name: string, email: string): any;
+  store(name: string, email: string): Promise<UserProps>;
   deleteUserById(id: string): Promise<void>;
-  getUserById(id: string): Promise<any>;
-  getAllUsers(): Promise<any>;
+  getUserById(id: string): Promise<UserProps>;
+  getAllUsers(): Promise<UserProps[]>;
 }
 
 export default class UserService implements IUserService {
@@ -14,7 +14,7 @@ export default class UserService implements IUserService {
     this.user = user;
   }
 
-  async store(name: string, email: string) {
+  async store(name: string, email: string): Promise<UserProps> {
     const emailExists = await this.user.findUserByEmail(email);
     if (emailExists) {
       throw new Error("Email is already in use");
@@ -31,17 +31,17 @@ export default class UserService implements IUserService {
     return user;
   }
 
-  async getAllUsers() {
+  async getAllUsers(): Promise<UserProps[]> {
     const users = await this.user.findAll();
     return users;
   }
 
-  async getUserById(id: string) {
+  async getUserById(id: string): Promise<UserProps> {
     const user = await this.user.findById(id);
     return user;
   }
 
-  async deleteUserById(id: string) {
+  async deleteUserById(id: string): Promise<void> {
     await this.user.deleteUser(id);
   }
 }
