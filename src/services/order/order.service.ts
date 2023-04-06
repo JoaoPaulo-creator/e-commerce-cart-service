@@ -1,7 +1,6 @@
 import { IOrders, OrdersProps } from "../../repository/interfaces/order";
 import { selectOrdersByStatus } from "../../utils/select-orders-by-status";
 
-// TODO: fix return type
 export interface IOrderService {
   createOrder(products: Object[]): Promise<OrdersProps>;
   findOrders(querie?: string): Promise<OrdersProps[] | undefined>;
