@@ -30,10 +30,14 @@ export default class OrderService implements IOrderService {
     return createOrder;
   }
 
-  async findOrders(querieValue?: string): Promise<OrdersProps[] | undefined> {
+  async findOrders(querieValue: string): Promise<OrdersProps[] | undefined> {
     const orders = await this.orderRepository.findAll();
     const filteredOrders = selectOrdersByStatus(orders, querieValue);
     const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
+
+    if (!statusList.includes(querieValue)) {
+      return orders;
+    }
 
     if (querieValue === undefined) {
       return orders;
