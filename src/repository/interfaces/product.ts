@@ -1,13 +1,23 @@
 // TODO: fix return type
 
+import { Types } from "mongoose";
+
 export interface IProducts {
   save(
     description: string,
     unitPrice: number,
     title: string,
     categoryId: string
-  ): any;
-  findById(id: string): any;
-  findAll(): any;
-  delete(id: string): any;
+  ): Promise<ProductsProps>;
+  findById(id: string): Promise<ProductsProps>;
+  findAll(): Promise<ProductsProps[]>;
+  delete(id: string): Promise<void>;
+}
+
+export interface ProductsProps {
+  unitPrice: number;
+  title: string;
+  categoryId: Types.ObjectId;
+  createdAt: Date;
+  description?: string | undefined;
 }
