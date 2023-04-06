@@ -1,17 +1,17 @@
 import { categoryModel } from "../models/category.model";
-import { ICategory } from "./interfaces/category";
+import { CategoryProps, ICategory } from "./interfaces/category";
 
 export class CategoryRepository implements ICategory {
-  async delete(id: string) {
-    const category = await categoryModel.findByIdAndDelete(id);
+  async delete(id: string): Promise<void> {
+    await categoryModel.findByIdAndDelete(id);
+  }
+  async create(name: string): Promise<CategoryProps> {
+    const category = await categoryModel.create({ name });
     return category;
   }
-  async create(name: string) {
-    return await categoryModel.create({ name });
-  }
 
-  async findAll() {
-    const categories = await categoryModel.find();
+  async findAll(): Promise<CategoryProps[]> {
+    const categories = await categoryModel.find().lean();
     return categories;
   }
 }

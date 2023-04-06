@@ -1,5 +1,9 @@
 export interface ICategory {
-  create(name: string): any;
-  findAll(): any;
-  delete(id: string): any;
+  create(name: string): Promise<CategoryProps>;
+  findAll(): Promise<CategoryProps[]>;
+  delete(id: string): Promise<void>;
+}
+
+export interface CategoryProps {
+  name?: string;
 }
