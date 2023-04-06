@@ -1,33 +1,35 @@
 import { orderModel } from "../models/order.model";
-import { IOrders } from "./interfaces/order";
+import { IOrders, OrdersProps } from "./interfaces/order";
 
 export default class OrderRepository implements IOrders {
-  async store(products: Object[]) {
+  async store(products: Object[]): Promise<OrdersProps> {
     const createOrder = await orderModel.create({
       products,
     });
     return createOrder;
   }
 
-  async findAll() {
-    const orders = await orderModel.find().populate("products.product");
+  async findAll(): Promise<OrdersProps[]> {
+    const orders = await orderModel.find().populate("products.product").lean();
     return orders;
   }
 
-  async findById(orderId: string) {
+  async findById(orderId: string): Promise<OrdersProps> {
     const orders = await orderModel
       .findById(orderId)
-      .populate("products.product");
+      .populate("products.product")
+      .lean();
     return orders;
   }
 
   async delete(id: string) {
-    const deleterOrder = await orderModel.findByIdAndDelete(id);
-    return deleterOrder;
+    await orderModel.findByIdAndDelete(id);
   }
 
-  async updateStatus(id: string, status: string) {
-    const orderStatus = await orderModel.findByIdAndUpdate(id, { status });
+  async updateStatus(id: string, status: string): Promise<OrdersProps> {
+    const orderStatus = await orderModel
+      .findByIdAndUpdate(id, { status })
+      .lean();
     return orderStatus;
   }
 
@@ -36,12 +38,14 @@ export default class OrderRepository implements IOrders {
     orderId: string,
     productArrayId: string,
     quantitiy: number
-  ) {
-    const order = await orderModel.findOneAndUpdate(
-      { _id: orderId, "products._id": productArrayId },
-      { $set: { "products.$.quantity": quantitiy } },
-      { new: true }
-    );
+  ): Promise<OrdersProps> {
+    const order = await orderModel
+      .findOneAndUpdate(
+        { _id: orderId, "products._id": productArrayId },
+        { $set: { "products.$.quantity": quantitiy } },
+        { new: true }
+      )
+      .lean();
     return order;
   }
 }
