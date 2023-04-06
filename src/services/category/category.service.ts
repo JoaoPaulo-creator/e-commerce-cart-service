@@ -1,11 +1,10 @@
-import { ICategory } from "../../repository/interfaces/category";
+import { CategoryProps, ICategory } from "../../repository/interfaces/category";
 
-// TODO: fix return type
 export interface ICategoryService {
-  createCategory(name: string): any;
-  findCategoryById(categoryId: string): any;
-  findAll(): any;
-  deleteCategory(categoryId: string): any;
+  createCategory(name: string): Promise<CategoryProps>;
+  findCategoryById(categoryId: string): Promise<CategoryProps>;
+  findAll(): Promise<CategoryProps[]>;
+  deleteCategory(categoryId: string): Promise<void>;
 }
 
 export default class CategoryService implements ICategoryService {
@@ -14,25 +13,21 @@ export default class CategoryService implements ICategoryService {
   constructor(categoryRepository: ICategory) {
     this.categoryRepository = categoryRepository;
   }
+  findCategoryById(categoryId: string): Promise<CategoryProps> {
+    throw new Error("Method not implemented.");
+  }
 
-  async findAll() {
+  async findAll(): Promise<CategoryProps[]> {
     const categories = await this.categoryRepository.findAll();
     return categories;
   }
 
-  async deleteCategory(categoryId: string) {
-    const category = await this.categoryRepository.delete(categoryId);
-    if (!category) throw new Error("Category not found");
-    return category;
+  async deleteCategory(categoryId: string): Promise<void> {
+    await this.categoryRepository.delete(categoryId);
   }
 
-  async createCategory(name: string) {
+  async createCategory(name: string): Promise<CategoryProps> {
     const createCategory = await this.categoryRepository.create(name);
     return createCategory;
-  }
-
-  async findCategoryById(categoryId: string) {
-    // const category = await this.categoryRepository.findById(categoryId);
-    // return category;
   }
 }

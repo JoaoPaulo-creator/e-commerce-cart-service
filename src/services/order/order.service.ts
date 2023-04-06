@@ -1,18 +1,18 @@
-import { IOrders } from "../../repository/interfaces/order";
+import { IOrders, OrdersProps } from "../../repository/interfaces/order";
 import { selectOrdersByStatus } from "../../utils/select-orders-by-status";
 
 // TODO: fix return type
 export interface IOrderService {
-  createOrder(products: Object[]): any;
-  findOrders(querie: string): any;
-  findOrderById(orderId: string): any;
-  deleteOrder(orderId: string): any;
-  updateOrderStatus(orderId: string, status: string): any;
+  createOrder(products: Object[]): Promise<OrdersProps>;
+  findOrders(querie?: string): Promise<OrdersProps[] | undefined>;
+  findOrderById(orderId: string): Promise<OrdersProps>;
+  deleteOrder(orderId: string): Promise<void>;
+  updateOrderStatus(orderId: string, status: string): Promise<OrdersProps>;
   updateOrderQuantity(
     orderId: string,
     productId: string,
     quantity: number
-  ): any;
+  ): Promise<OrdersProps>;
 }
 
 export default class OrderService implements IOrderService {
@@ -31,11 +31,11 @@ export default class OrderService implements IOrderService {
     return createOrder;
   }
 
-  async findOrders(querieValue: string) {
+  async findOrders(querieValue?: string): Promise<OrdersProps[] | undefined> {
     const orders = await this.orderRepository.findAll();
+    const filteredOrders = selectOrdersByStatus(orders, querieValue);
     const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
 
-    const filteredOrders = selectOrdersByStatus(orders, querieValue);
     if (querieValue === undefined) {
       return orders;
     }

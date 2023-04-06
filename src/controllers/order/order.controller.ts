@@ -5,7 +5,7 @@ import OrderService, {
 } from "../../services/order/order.service";
 
 const ParseQuerieToString = z.object({
-  status: z.string(),
+  status: z.string().optional(),
 });
 
 export default class OrderController {
