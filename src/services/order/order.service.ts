@@ -1,9 +1,10 @@
 import { IOrders } from "../../repository/interfaces/order";
+import { selectOrdersByStatus } from "../../utils/select-orders-by-status";
 
 // TODO: fix return type
 export interface IOrderService {
   createOrder(products: Object[]): any;
-  findOrders(): any;
+  findOrders(querie: string): any;
   findOrderById(orderId: string): any;
   deleteOrder(orderId: string): any;
   updateOrderStatus(orderId: string, status: string): any;
@@ -30,18 +31,18 @@ export default class OrderService implements IOrderService {
     return createOrder;
   }
 
-  async findOrders() {
+  async findOrders(querieValue: string) {
     const orders = await this.orderRepository.findAll();
-    if (orders.length === 0) {
-      throw new Error("Your cart is impty");
+    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
+
+    const filteredOrders = selectOrdersByStatus(orders, querieValue);
+    if (querieValue === undefined) {
+      return orders;
     }
 
-    const filteredOrders = orders.filter(
-      (order) => !order.status.includes("CANCELLED")
-    );
-    console.log("Orders from orders list:", orders.length);
-    console.log("Filtered orders:", filteredOrders.length);
-    return filteredOrders;
+    if (statusList.includes(querieValue)) {
+      return filteredOrders;
+    }
   }
 
   async findOrderById(orderId: string) {
@@ -86,7 +87,6 @@ export default class OrderService implements IOrderService {
     quantity: number
   ) {
     const order = await this.orderRepository.findById(orderId);
-    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
 
     if (!order) {
       throw new Error("Id not found");

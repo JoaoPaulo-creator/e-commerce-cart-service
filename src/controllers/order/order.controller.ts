@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
+import { z } from "zod";
 import OrderService, {
   IOrderService,
 } from "../../services/order/order.service";
+
+const ParseQuerieToString = z.object({
+  status: z.string(),
+});
 
 export default class OrderController {
   private orderService: IOrderService;
@@ -24,8 +29,10 @@ export default class OrderController {
   }
 
   async getOrders(req: Request, res: Response) {
+    const { status } = ParseQuerieToString.parse(req.query);
+
     return await this.orderService
-      .findOrders()
+      .findOrders(status)
       .then((response: any) => {
         return res.status(200).json(response);
       })
