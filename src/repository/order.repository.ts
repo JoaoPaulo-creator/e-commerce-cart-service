@@ -11,7 +11,10 @@ export default class OrderRepository implements IOrders {
   }
 
   async findAll(): Promise<OrdersProps[]> {
-    const orders = await orderModel.find().populate("products.product").lean();
+    const orders = await orderModel
+      .find()
+      .populate(["products.product", "user.userId"])
+      .lean();
     return orders;
   }
 
