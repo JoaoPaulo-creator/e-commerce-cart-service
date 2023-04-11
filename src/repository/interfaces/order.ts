@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 export interface IOrders {
   findAll(): Promise<OrdersProps[]>;
   findById(orderId: string): Promise<OrdersProps>;
-  store(products: Object[]): Promise<OrdersProps>;
+  store(user: Object, products: Object[]): Promise<OrdersProps>;
   delete(id: string): Promise<void>;
   updateStatus(id: string, status: string): Promise<OrdersProps>;
   updateQuantity(
@@ -14,6 +14,9 @@ export interface IOrders {
 }
 
 export interface OrdersProps {
+  user: {
+    userId: Types.ObjectId;
+  };
   status: string;
   createdAt: Date;
   products: {

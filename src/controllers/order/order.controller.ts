@@ -16,15 +16,15 @@ export default class OrderController {
   }
 
   async createOrder(req: Request, res: Response) {
-    const { products } = req.body;
+    const { user, products } = req.body;
 
     return await this.orderService
-      .createOrder(products)
+      .createOrder(user, products)
       .then((response: any) => {
         return res.status(201).json(response);
       })
       .catch((error: { message: any }) => {
-        return res.status(404).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
       });
   }
 

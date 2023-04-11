@@ -3,6 +3,7 @@ import UserService from "../../services/user/user.service";
 
 export default class UserController {
   private userService: UserService;
+
   constructor(userService: UserService) {
     this.userService = userService;
   }

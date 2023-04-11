@@ -2,7 +2,7 @@ import { IOrders, OrdersProps } from "../../repository/interfaces/order";
 import { selectOrdersByStatus } from "../../utils/select-orders-by-status";
 
 export interface IOrderService {
-  createOrder(products: Object[]): Promise<OrdersProps>;
+  createOrder(user: Object, products: Object[]): Promise<OrdersProps>;
   findOrders(querie?: string): Promise<OrdersProps[] | undefined>;
   findOrderById(orderId: string): Promise<OrdersProps>;
   deleteOrder(orderId: string): Promise<void>;
@@ -21,12 +21,12 @@ export default class OrderService implements IOrderService {
     this.orderRepository = orderRepository;
   }
 
-  async createOrder(products: Object[]) {
+  async createOrder(user: Object, products: Object[]) {
     if (!products || products.length === 0) {
       throw Error("At least one product must be informed");
     }
 
-    const createOrder = await this.orderRepository.store(products);
+    const createOrder = await this.orderRepository.store(user, products);
     return createOrder;
   }
 

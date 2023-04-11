@@ -2,8 +2,9 @@ import { orderModel } from "../models/order.model";
 import { IOrders, OrdersProps } from "./interfaces/order";
 
 export default class OrderRepository implements IOrders {
-  async store(products: Object[]): Promise<OrdersProps> {
+  async store(user: Object, products: Object[]): Promise<OrdersProps> {
     const createOrder = await orderModel.create({
+      user,
       products,
     });
     return createOrder;
@@ -17,7 +18,7 @@ export default class OrderRepository implements IOrders {
   async findById(orderId: string): Promise<OrdersProps> {
     const orders = await orderModel
       .findById(orderId)
-      .populate("products.product")
+      .populate(["products.product", "user.userId"])
       .lean();
     return orders;
   }
