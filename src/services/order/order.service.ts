@@ -32,18 +32,19 @@ export default class OrderService implements IOrderService {
 
   async findOrders(querieValue: string): Promise<OrdersProps[] | undefined> {
     const orders = await this.orderRepository.findAll();
-    const filteredOrders = selectOrdersByStatus(orders, querieValue);
+    const querieValueToUpperCase = querieValue?.toUpperCase();
+    const filteredOrders = selectOrdersByStatus(orders, querieValueToUpperCase);
     const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
 
-    if (!statusList.includes(querieValue)) {
+    if (!statusList.includes(querieValueToUpperCase)) {
       return orders;
     }
 
-    if (querieValue === undefined) {
+    if (querieValueToUpperCase === undefined) {
       return orders;
     }
 
-    if (statusList.includes(querieValue)) {
+    if (statusList.includes(querieValueToUpperCase)) {
       return filteredOrders;
     }
   }
