@@ -1,19 +1,14 @@
-import config from "config";
-import express from "express";
-import dataBaseConnection from "../config/database";
-import corsMiddleware from "./main/middlewares/cors/cors-setup";
-import { routes } from "./router/routes";
+require("dotenv").config();
+import { MongoClient } from "mongodb";
 
-const app = express();
-const cors = corsMiddleware;
+const mongoURL: any = process.env.MONGO_URL;
 
-app.use(express.json());
-app.use(cors);
-app.use("/api/v1", routes);
-
-const port = config.get<number>("port");
-
-app.listen(port, async () => {
-  await dataBaseConnection();
-  console.log(`🚀 App is running at ${port}`);
-});
+MongoClient.connect(mongoURL)
+  .then(() => console.log("✅ Connected to database"))
+  .then(async () => {
+    const port = process.env.PORT;
+    const app = (await import("./main/config/app")).default;
+    app.listen(port, async () => {
+      console.log(`🚀 App is running at ${port}`);
+    });
+  });
