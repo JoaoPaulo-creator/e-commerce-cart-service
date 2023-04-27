@@ -1,6 +1,6 @@
 import { IUser, UserProps } from "../../repository/interfaces/user";
 
-interface IUserService {
+export interface IUserService {
   store(name: string, email: string): Promise<UserProps>;
   deleteUserById(id: string): Promise<void>;
   getUserById(id: string): Promise<UserProps>;
@@ -8,11 +8,7 @@ interface IUserService {
 }
 
 export default class UserService implements IUserService {
-  private user: IUser;
-
-  constructor(user: IUser) {
-    this.user = user;
-  }
+  constructor(private readonly user: IUser) {}
 
   async store(name: string, email: string): Promise<UserProps> {
     const emailExists = await this.user.findUserByEmail(email);

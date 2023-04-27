@@ -1,8 +1,8 @@
 import config from "config";
 import express from "express";
 import dataBaseConnection from "../config/database";
-import corsMiddleware from "./middlewares/cors/cors-setup";
-import { routes } from "./routes";
+import corsMiddleware from "./main/middlewares/cors/cors-setup";
+import { routes } from "./router/routes";
 
 const app = express();
 const cors = corsMiddleware;

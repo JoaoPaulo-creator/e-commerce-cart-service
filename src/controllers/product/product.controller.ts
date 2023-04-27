@@ -2,11 +2,7 @@ import { Request, Response } from "express";
 import { IProductService } from "../../services/product/product.service";
 
 export default class ProductController {
-  private productService: IProductService;
-
-  constructor(productService: IProductService) {
-    this.productService = productService;
-  }
+  constructor(private readonly productService: IProductService) {}
 
   async save(req: Request, res: Response) {
     const { description, unitPrice, title, categoryId } = req.body;

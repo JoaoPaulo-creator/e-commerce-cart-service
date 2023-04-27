@@ -2,11 +2,7 @@ import { Request, Response } from "express";
 import UserService from "../../services/user/user.service";
 
 export default class UserController {
-  private userService: UserService;
-
-  constructor(userService: UserService) {
-    this.userService = userService;
-  }
+  constructor(private readonly userService: UserService) {}
 
   async save(req: Request, res: Response) {
     const { name, email } = req.body;
