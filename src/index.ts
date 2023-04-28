@@ -1,14 +1,14 @@
 require("dotenv").config();
-import { MongoClient } from "mongodb";
+import dataBaseConnection from "./infra/config/database";
 
-const mongoURL: any = process.env.MONGO_URL;
+async function main() {
+  return await dataBaseConnection();
+}
 
-MongoClient.connect(mongoURL)
-  .then(() => console.log("✅ Connected to database"))
-  .then(async () => {
-    const port = process.env.PORT;
-    const app = (await import("./main/config/app")).default;
-    app.listen(port, async () => {
-      console.log(`🚀 App is running at ${port}`);
-    });
+main().then(async () => {
+  const port = process.env.PORT;
+  const app = (await import("./main/config/app")).default;
+  app.listen(port, async () => {
+    console.log(`🚀 App is running at ${port}`);
   });
+});
