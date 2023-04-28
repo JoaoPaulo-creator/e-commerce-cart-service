@@ -2,36 +2,29 @@ import { model, Schema } from "mongoose";
 
 export const productModel = model(
   "product",
-  new Schema(
-    {
-      unitPrice: {
-        type: Number,
-        required: true,
-      },
+  new Schema({
+    unitPrice: {
+      type: Number,
+      required: true,
+    },
 
-      title: {
-        type: String,
-        required: true,
-      },
+    title: {
+      type: String,
+      required: true,
+    },
 
-      description: {
-        type: String,
-      },
+    description: {
+      type: String,
+    },
 
-      categoryId: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "product_category",
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-    }
-    /* {
-      capped: { size: 1024 },
-      bufferCommands: true,
-      autoCreate: false,
-    } */
-  )
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "product_category",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  })
 );
