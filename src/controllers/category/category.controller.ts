@@ -14,7 +14,7 @@ export default class CategoryController {
 
     return await this.categoryService
       .createCategory(name)
-      .then((response: Response) => {
+      .then((response) => {
         return res.status(201).json(response);
       })
       .catch(() => res.status(400).json({ error: "Category already exists" }))
@@ -26,7 +26,7 @@ export default class CategoryController {
   async show(req: Request, res: Response) {
     return await this.categoryService
       .findAll()
-      .then((response: Response) => res.json(response))
+      .then((response) => res.json(response))
       .catch((error: Error) => {
         return res.json(error);
       });

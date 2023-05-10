@@ -1,8 +1,8 @@
-require("dotenv").config();
+import "dotenv/config";
 import mongoose from "mongoose";
 
 async function dataBaseConnection() {
-  const dbUri = process.env.MONGO_URL;
+  const dbUri: string = process.env.MONGO_URL!.toString();
   try {
     await mongoose.connect(dbUri);
     console.log("✅ Conectado a base de dados com sucesso");
