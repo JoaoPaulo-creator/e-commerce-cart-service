@@ -1,26 +1,27 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express'
 import CategoryService, {
   ICategoryService,
-} from "../../services/category/category.service";
+} from '../../services/category/category.service'
 
 export default class CategoryController {
-  private categoryService: ICategoryService;
+  private categoryService: ICategoryService
 
   constructor(categoryService: CategoryService) {
-    this.categoryService = categoryService;
+    this.categoryService = categoryService
   }
+
   async save(req: Request, res: Response) {
-    const { name } = req.body;
+    const { name } = req.body
 
     return await this.categoryService
       .createCategory(name)
       .then((response) => {
-        return res.status(201).json(response);
+        return res.status(201).json(response)
       })
-      .catch(() => res.status(400).json({ error: "Category already exists" }))
+      .catch(() => res.status(400).json({ error: 'Category already exists' }))
       .catch((error: Error) => {
-        return res.json({ error: error.message });
-      });
+        return res.json({ error: error.message })
+      })
   }
 
   async show(req: Request, res: Response) {
@@ -28,18 +29,18 @@ export default class CategoryController {
       .findAll()
       .then((response) => res.json(response))
       .catch((error: Error) => {
-        return res.json(error);
-      });
+        return res.json(error)
+      })
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
+    const { id } = req.params
     return this.categoryService
       .deleteCategory(id)
       .then(() => res.sendStatus(204))
       .catch((error: Error) => {
-        const { message } = error;
-        return res.status(404).json({ error: message });
-      });
+        const { message } = error
+        return res.status(404).json({ error: message })
+      })
   }
 }

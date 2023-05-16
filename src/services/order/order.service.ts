@@ -1,112 +1,112 @@
-import { IOrders, OrdersProps } from "../../repository/interfaces/order";
-import { selectOrdersByStatus } from "../../utils/select-orders-by-status";
+import { IOrders, OrdersProps } from '../../repository/interfaces/order'
+import { selectOrdersByStatus } from '../../utils/select-orders-by-status'
 
 export interface IOrderService {
-  createOrder(user: Object, products: Object[]): Promise<OrdersProps>;
-  findOrders(querie?: string): Promise<OrdersProps[] | undefined>;
-  findOrderById(orderId: string): Promise<OrdersProps>;
-  deleteOrder(orderId: string): Promise<void>;
-  updateOrderStatus(orderId: string, status: string): Promise<OrdersProps>;
+  createOrder(user: Object, products: Object[]): Promise<OrdersProps>
+  findOrders(querie?: string): Promise<OrdersProps[] | undefined>
+  findOrderById(orderId: string): Promise<OrdersProps>
+  deleteOrder(orderId: string): Promise<void>
+  updateOrderStatus(orderId: string, status: string): Promise<OrdersProps>
   updateOrderQuantity(
     orderId: string,
     productId: string,
-    quantity: number
-  ): Promise<OrdersProps>;
+    quantity: number,
+  ): Promise<OrdersProps>
 }
 
 export default class OrderService implements IOrderService {
-  private orderRepository: IOrders;
+  private orderRepository: IOrders
 
   constructor(orderRepository: IOrders) {
-    this.orderRepository = orderRepository;
+    this.orderRepository = orderRepository
   }
 
   async createOrder(user: Object, products: Object[]) {
     if (!products || products.length === 0) {
-      throw Error("At least one product must be informed");
+      throw Error('At least one product must be informed')
     }
 
-    const createOrder = await this.orderRepository.store(user, products);
-    return createOrder;
+    const createOrder = await this.orderRepository.store(user, products)
+    return createOrder
   }
 
   async findOrders(querieValue: string): Promise<OrdersProps[] | undefined> {
-    const orders = await this.orderRepository.findAll();
-    const querieValueToUpperCase = querieValue?.toUpperCase();
-    const filteredOrders = selectOrdersByStatus(orders, querieValueToUpperCase);
-    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
+    const orders = await this.orderRepository.findAll()
+    const querieValueToUpperCase = querieValue?.toUpperCase()
+    const filteredOrders = selectOrdersByStatus(orders, querieValueToUpperCase)
+    const statusList = ['IN_PREPARATION', 'ON_THE_WAY', 'DONE', 'CANCELLED']
 
     if (!statusList.includes(querieValueToUpperCase)) {
-      return orders;
+      return orders
     }
 
     if (querieValueToUpperCase === undefined) {
-      return orders;
+      return orders
     }
 
     if (statusList.includes(querieValueToUpperCase)) {
-      return filteredOrders;
+      return filteredOrders
     }
   }
 
   async findOrderById(orderId: string) {
-    const order = await this.orderRepository.findById(orderId);
+    const order = await this.orderRepository.findById(orderId)
     if (!order) {
-      throw Error("Order not found");
+      throw Error('Order not found')
     }
-    return order;
+    return order
   }
 
   async deleteOrder(orderId: string) {
-    const orderExists = await this.orderRepository.findById(orderId);
+    const orderExists = await this.orderRepository.findById(orderId)
     if (!orderExists) {
-      throw Error("Order id not found");
+      throw Error('Order id not found')
     }
-    const order = await this.orderRepository.delete(orderId);
-    return order;
+    const order = await this.orderRepository.delete(orderId)
+    return order
   }
 
   async updateOrderStatus(orderId: string, status: string) {
-    const order = await this.orderRepository.findById(orderId);
-    const statusList = ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"];
+    const order = await this.orderRepository.findById(orderId)
+    const statusList = ['IN_PREPARATION', 'ON_THE_WAY', 'DONE', 'CANCELLED']
 
     if (!order) {
-      throw new Error("Id not found");
+      throw new Error('Id not found')
     }
 
     if (!statusList.includes(status)) {
-      throw new Error("Invalid status");
+      throw new Error('Invalid status')
     }
 
     const updateStatus = await this.orderRepository.updateStatus(
       orderId,
-      status
-    );
-    return updateStatus;
+      status,
+    )
+    return updateStatus
   }
 
   async updateOrderQuantity(
     orderId: string,
     productId: string,
-    quantity: number
+    quantity: number,
   ) {
-    const order = await this.orderRepository.findById(orderId);
+    const order = await this.orderRepository.findById(orderId)
 
     if (!order) {
-      throw new Error("Id not found");
+      throw new Error('Id not found')
     }
 
-    if (!order.status.includes("IN_PREPARATION")) {
+    if (!order.status.includes('IN_PREPARATION')) {
       throw new Error(
-        "Is not possible to update this order. Maye this orders was cancelled or is on it's way to customer"
-      );
+        "Is not possible to update this order. Maye this orders was cancelled or is on it's way to customer",
+      )
     }
 
     const updateQuantity = await this.orderRepository.updateQuantity(
       orderId,
       productId,
-      quantity
-    );
-    return updateQuantity;
+      quantity,
+    )
+    return updateQuantity
   }
 }

@@ -1,7 +1,7 @@
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose'
 
 export const orderModel = model(
-  "order",
+  'order',
   new Schema({
     user: {
       required: true,
@@ -9,15 +9,15 @@ export const orderModel = model(
         userId: {
           type: Schema.Types.ObjectId,
           required: true,
-          ref: "users",
+          ref: 'users',
         },
       },
     },
 
     status: {
       type: String,
-      enum: ["IN_PREPARATION", "ON_THE_WAY", "DONE", "CANCELLED"],
-      default: "IN_PREPARATION",
+      enum: ['IN_PREPARATION', 'ON_THE_WAY', 'DONE', 'CANCELLED'],
+      default: 'IN_PREPARATION',
     },
     createdAt: {
       type: Date,
@@ -30,7 +30,7 @@ export const orderModel = model(
           product: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "product",
+            ref: 'product',
           },
           quantity: {
             type: Number,
@@ -39,5 +39,5 @@ export const orderModel = model(
         },
       ],
     },
-  })
-);
+  }),
+)

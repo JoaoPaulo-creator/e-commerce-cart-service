@@ -1,49 +1,49 @@
-import { IProducts } from "../../repository/interfaces/product";
+import { IProducts } from '../../repository/interfaces/product'
 
 export interface IProductService {
-  findAll(): Promise<any[]>;
+  findAll(): Promise<any[]>
   create(
     description: string,
     unitPrice: number,
     title: string,
-    categoryId: string
-  ): any;
-  findById(id: string): any;
+    categoryId: string,
+  ): any
+  findById(id: string): any
 }
 
 export default class ProductService implements IProductService {
-  private productRepo: IProducts;
+  private productRepo: IProducts
 
   constructor(productRepo: IProducts) {
-    this.productRepo = productRepo;
+    this.productRepo = productRepo
   }
 
   async findById(id: string) {
-    const product = await this.productRepo.findById(id);
+    const product = await this.productRepo.findById(id)
     if (!product) {
-      throw new Error("Product not found");
+      throw new Error('Product not found')
     }
-    return product;
+    return product
   }
 
   async create(
     description: string,
     unitPrice: number,
     title: string,
-    categoryId: string
+    categoryId: string,
   ) {
     const product = await this.productRepo.save(
       description,
       unitPrice,
       title,
-      categoryId
-    );
+      categoryId,
+    )
 
-    return product;
+    return product
   }
 
   async findAll(): Promise<any[]> {
-    const products = await this.productRepo.findAll();
-    return products;
+    const products = await this.productRepo.findAll()
+    return products
   }
 }

@@ -1,7 +1,7 @@
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose'
 
 export const userModel = model(
-  "users",
+  'users',
   new Schema({
     name: {
       type: String,
@@ -15,5 +15,5 @@ export const userModel = model(
       type: Date,
       default: Date.now,
     },
-  })
-);
+  }),
+)

@@ -1,6 +1,6 @@
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose'
 export const categoryModel = model(
-  "product_category",
+  'product_category',
   new Schema({
     name: {
       type: String,
@@ -10,5 +10,5 @@ export const categoryModel = model(
       type: Date,
       default: Date.now,
     },
-  })
-);
+  }),
+)

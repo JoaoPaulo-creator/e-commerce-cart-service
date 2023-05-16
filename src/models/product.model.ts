@@ -1,7 +1,7 @@
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose'
 
 export const productModel = model(
-  "product",
+  'product',
   new Schema({
     unitPrice: {
       type: Number,
@@ -20,11 +20,11 @@ export const productModel = model(
     categoryId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "product_category",
+      ref: 'product_category',
     },
     createdAt: {
       type: Date,
       default: Date.now,
     },
-  })
-);
+  }),
+)
