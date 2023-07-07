@@ -1,5 +1,4 @@
 import { IOrders, OrdersProps } from '../../repository/interfaces/order'
-import { selectOrdersByStatus } from '../../utils/select-orders-by-status'
 
 export interface IOrderService {
   createOrder(user: Object, products: Object[]): Promise<OrdersProps>
@@ -30,10 +29,18 @@ export default class OrderService implements IOrderService {
     return createOrder
   }
 
+  private selectOrdersByStatus(orders: OrdersProps[], status?: string) {
+    const filteredOrders = orders.filter((order) => order.status === status)
+    return filteredOrders
+  }
+
   async findOrders(querieValue: string): Promise<OrdersProps[] | undefined> {
     const orders = await this.orderRepository.findAll()
     const querieValueToUpperCase = querieValue?.toUpperCase()
-    const filteredOrders = selectOrdersByStatus(orders, querieValueToUpperCase)
+    const filteredOrders = this.selectOrdersByStatus(
+      orders,
+      querieValueToUpperCase,
+    )
     const statusList = ['IN_PREPARATION', 'ON_THE_WAY', 'DONE', 'CANCELLED']
 
     if (!statusList.includes(querieValueToUpperCase)) {
