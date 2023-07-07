@@ -1,12 +1,10 @@
 import { Request, Response } from 'express'
-import CategoryService, {
-  ICategoryService,
-} from '../../services/category/category.service'
+import { ICategoryService } from '../../services/category/category.service'
 
 export default class CategoryController {
   private categoryService: ICategoryService
 
-  constructor(categoryService: CategoryService) {
+  constructor(categoryService: ICategoryService) {
     this.categoryService = categoryService
   }
 
