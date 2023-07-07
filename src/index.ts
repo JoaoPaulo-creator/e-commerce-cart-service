@@ -1,5 +1,5 @@
 import dataBaseConnection from './infra/config/database'
-require('dotenv').config()
+import 'dotenv/config'
 
 async function main() {
   return await dataBaseConnection()
