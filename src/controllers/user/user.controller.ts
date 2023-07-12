@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-constructor */
 import { Request, Response } from 'express'
-import UserService from '../../services/user/user.service'
+import { IUserService } from '../../services/user/user.service'
 
 export default class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: IUserService) {}
 
   async save(req: Request, res: Response) {
     const { name, email } = req.body

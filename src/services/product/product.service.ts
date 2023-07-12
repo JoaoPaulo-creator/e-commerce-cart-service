@@ -1,15 +1,5 @@
 import { IProducts } from '../../repository/interfaces/product'
-
-export interface IProductService {
-  findAll(): Promise<any[]>
-  create(
-    description: string,
-    unitPrice: number,
-    title: string,
-    categoryId: string,
-  ): any
-  findById(id: string): any
-}
+import { IProductService } from '../contracts/iproduct.service'
 
 export default class ProductService implements IProductService {
   private productRepo: IProducts

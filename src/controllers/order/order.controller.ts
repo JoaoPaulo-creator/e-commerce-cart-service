@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
-import OrderService, { IOrderService } from '../../services/order/order.service'
+import { IOrderService } from '../../services/order/order.service'
 
 const ParseQuerieToString = z.object({
   status: z.string().optional(),
@@ -9,7 +9,7 @@ const ParseQuerieToString = z.object({
 export default class OrderController {
   private orderService: IOrderService
 
-  constructor(orderService: OrderService) {
+  constructor(orderService: IOrderService) {
     this.orderService = orderService
   }
 
