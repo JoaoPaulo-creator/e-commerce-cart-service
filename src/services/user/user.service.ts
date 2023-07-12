@@ -1,11 +1,5 @@
 import { IUser, UserProps } from '../../repository/interfaces/user'
-
-export interface IUserService {
-  store(name: string, email: string): Promise<UserProps>
-  deleteUserById(id: string): Promise<void>
-  getUserById(id: string): Promise<UserProps>
-  getAllUsers(): Promise<UserProps[]>
-}
+import { IUserService } from '../contracts/iuser.service'
 
 export default class UserService implements IUserService {
   // eslint-disable-next-line no-useless-constructor
